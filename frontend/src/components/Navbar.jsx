@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from 'react-router-dom'
 
-export default function Navbar({ currentUser, onLogout, weeklyRemaining, onNavigate }) {
+export default function Navbar({ currentUser, onLogout, weeklyRemaining }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onDocClick = (e) => {
@@ -43,8 +45,8 @@ export default function Navbar({ currentUser, onLogout, weeklyRemaining, onNavig
 
           {open && (
             <div className="absolute right-0 mt-2 w-44 bg-white border rounded shadow-lg z-20">
-              <button onClick={() => { setOpen(false); onNavigate && onNavigate('profile'); }} className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm">Profile</button>
-              <button onClick={() => { setOpen(false); onNavigate && onNavigate('settings'); }} className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm">Settings</button>
+              <button onClick={() => { setOpen(false); navigate('/profile'); }} className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm">Profile</button>
+              <button onClick={() => { setOpen(false); navigate('/settings'); }} className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm">Settings</button>
               <div className="border-t" />
               <button
                 onClick={() => { setOpen(false); onLogout && onLogout(); }}

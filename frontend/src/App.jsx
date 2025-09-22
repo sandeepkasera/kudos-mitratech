@@ -1,38 +1,46 @@
 import React, { useState, useEffect } from "react";
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import LoginPage from "./pages/LoginPage.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Profile from "./pages/Profile.jsx";
 import Settings from "./pages/Settings.jsx";
+import { useDispatch, useSelector } from 'react-redux'
+import { setUser, clearUser, setWeeklyRemaining } from './store/userSlice'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function App() {
-  const [currentUser, setCurrentUser] = useState(null);
+  const dispatch = useDispatch()
+  const currentUser = useSelector(s => s.user.currentUser)
+  const weeklyRemaining = useSelector(s => s.user.weeklyRemaining)
   const [users, setUsers] = useState([]);
   const [kudos, setKudos] = useState([]);
-  const [weeklyRemaining, setWeeklyRemaining] = useState(3);
 
   const handleLogin = (user) => {
-    setCurrentUser(user.user);
-    // fetch weekly remaining for the logged in user
     (async () => {
+      // set minimal user immediately
+      dispatch(setUser(user.user));
+      // fetch weekly remaining and full user data
       try {
         const res = await fetch(`${API_BASE_URL}/me/?user_id=${user.user.id}`);
         const data = await res.json();
-        if (data.weekly_remaining !== undefined) setWeeklyRemaining(data.weekly_remaining);
+        if (data.weekly_remaining !== undefined) dispatch(setWeeklyRemaining(data.weekly_remaining));
+        // also update stored user to include nested organization etc
+        if (data) dispatch(setUser(data));
       } catch (err) {
         // ignore
       }
+      // navigate to dashboard after login
+      navigate('/dashboard');
     })();
   };
 
   const handleLogout = () => {
     // Clear any stored auth (if you store tokens later)
-    setCurrentUser(null);
+    dispatch(clearUser());
   };
 
-  const [view, setView] = useState("dashboard");
-  const navigate = (v) => setView(v);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!currentUser) return;
@@ -67,39 +75,17 @@ export default function App() {
     try {
       const r2 = await fetch(`${API_BASE_URL}/me/?user_id=${currentUser.id}`);
       const d2 = await r2.json();
-      if (d2.weekly_remaining !== undefined) setWeeklyRemaining(d2.weekly_remaining);
+      if (d2.weekly_remaining !== undefined) dispatch(setWeeklyRemaining(d2.weekly_remaining));
     } catch (err) {}
   };
 
-  if (!currentUser) return <LoginPage onLogin={handleLogin} />;
-
-  if (view === "profile") {
-    return <Profile currentUser={currentUser} />;
-  }
-
-  if (view === "settings") {
-    return (
-      <Settings
-        currentUser={currentUser}
-        onSaved={(data) => {
-          // Backend returns updated user data from me_view, update local state and go back to dashboard
-          setCurrentUser(data);
-          setView('dashboard');
-        }}
-      />
-    );
-  }
-
   return (
-    <Dashboard
-      currentUser={currentUser}
-      users={users}
-      kudos={kudos}
-      onGiveKudo={handleGiveKudo}
-      onLogout={handleLogout}
-      weeklyRemaining={weeklyRemaining}
-      setWeeklyRemaining={setWeeklyRemaining}
-      onNavigate={navigate}
-    />
+    <Routes>
+      <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+      <Route path="/" element={currentUser ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />} />
+      <Route path="/dashboard" element={currentUser ? <Dashboard currentUser={currentUser} users={users} kudos={kudos} onGiveKudo={handleGiveKudo} onLogout={handleLogout} weeklyRemaining={weeklyRemaining} onNavigate={(p) => navigate(p === 'profile' ? '/profile' : `/${p}`)} /> : <Navigate to="/login" replace />} />
+      <Route path="/profile" element={currentUser ? <Profile currentUser={currentUser} /> : <Navigate to="/login" replace />} />
+      <Route path="/settings" element={currentUser ? <Settings currentUser={currentUser} onSaved={(data) => { dispatch(setUser(data)); navigate('/dashboard'); }} /> : <Navigate to="/login" replace />} />
+    </Routes>
   );
 }
