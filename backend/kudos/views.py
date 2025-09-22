@@ -17,18 +17,43 @@ def login_view(request):
         return Response({"user": serializer.data})
     return Response({"detail": "invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
-@api_view(["GET"])
+@api_view(["GET", "PUT", "PATCH"])
 def me_view(request):
     uid = request.query_params.get("user_id")
     user = get_object_or_404(User, id=uid)
+
+    if request.method in ("PUT", "PATCH"):
+        # allow updating first_name and last_name only for now
+        first = request.data.get("first_name")
+        last = request.data.get("last_name")
+        changed = False
+        if first is not None:
+            user.first_name = first
+            changed = True
+        if last is not None:
+            user.last_name = last
+            changed = True
+        if changed:
+            user.save()
+
     data = UserSerializer(user).data
     data["weekly_remaining"] = weekly_remaining(user)
     return Response(data)
 
+
+@api_view(["GET"])
+def sent_kudos(request):
+    user_id = request.query_params.get("user_id")
+    user = get_object_or_404(User, id=user_id)
+    qs = user.kudos_sent.select_related("recipient").order_by("-created_at")
+    serializer = KudoSerializer(qs, many=True)
+    return Response(serializer.data)
+
 @api_view(["GET"])
 def users_list(request):
     org = request.query_params.get("org_id")
-    qs = User.objects.all()
+    # By default we exclude admin/staff/superuser accounts from recipient lists
+    qs = User.objects.filter(is_staff=False, is_superuser=False)
     if org:
         qs = qs.filter(organization_id=org)
     serializer = UserSerializer(qs, many=True)

@@ -7,4 +7,5 @@ urlpatterns = [
     path("users/", views.users_list),
     path("kudos/give/", views.give_kudo),
     path("kudos/received/", views.received_kudos),
+    path("kudos/sent/", views.sent_kudos),
 ]
