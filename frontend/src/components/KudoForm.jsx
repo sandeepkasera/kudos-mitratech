@@ -4,9 +4,9 @@ export default function KudoForm({ users, currentUserId, onSubmit }) {
   const [recipient, setRecipient] = useState("");
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    if (users && users.length > 0) setRecipient(users[0].id);
-  }, [users]);
+  // useEffect(() => {
+  //   if (users && users.length > 0) setRecipient(users[0].id);
+  // }, [users]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export default function LoginForm({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -10,7 +12,7 @@ export default function LoginForm({ onLogin }) {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:8000/api/login/", {
+      const res = await fetch(`${API_BASE_URL}/login/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -21,7 +23,7 @@ export default function LoginForm({ onLogin }) {
       if (!res.ok) {
         setError(data.error || "Login failed");
       } else {
-        onLogin(data); // returns user object from backend
+        onLogin(data);
       }
     } catch (err) {
       setError("Server error");
@@ -29,8 +31,8 @@ export default function LoginForm({ onLogin }) {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100 px-4">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg">
         <h2 className="text-2xl font-bold mb-6 text-black text-center">Login</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <input
