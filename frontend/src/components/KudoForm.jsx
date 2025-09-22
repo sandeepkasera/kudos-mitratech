@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-export default function KudoForm({ users, currentUserId, onSubmit }) {
+export default function KudoForm({ users, currentUserId, onSubmit, weeklyRemaining }) {
   const [recipient, setRecipient] = useState("");
   const [message, setMessage] = useState("");
 
@@ -19,7 +19,10 @@ export default function KudoForm({ users, currentUserId, onSubmit }) {
       onSubmit={handleSubmit} 
       className="bg-white p-6 rounded-lg shadow-md w-full max-w-md mx-auto mb-6"
     >
-      <h3 className="text-xl font-bold text-black mb-4 text-center sm:text-left">Give Kudos</h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xl font-bold text-black text-center sm:text-left">Give Kudos</h3>
+        <div className="text-sm text-gray-700">Left this week: <span className="font-semibold">{typeof weeklyRemaining === 'number' ? weeklyRemaining : '—'}</span></div>
+      </div>
       <select 
         value={recipient} 
         onChange={(e) => setRecipient(e.target.value)}
@@ -36,9 +39,10 @@ export default function KudoForm({ users, currentUserId, onSubmit }) {
       />
       <button 
         type="submit" 
-        className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition"
+        className={`w-full py-2 rounded transition ${weeklyRemaining <= 0 ? 'bg-gray-300 text-gray-600 cursor-not-allowed' : 'bg-black text-white hover:bg-gray-800'}`}
+        disabled={weeklyRemaining <= 0}
       >
-        Send Kudo
+        {weeklyRemaining <= 0 ? 'No Kudos Left' : 'Send Kudo'}
       </button>
     </form>
   );
