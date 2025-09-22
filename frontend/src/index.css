@@ -1,0 +1,38 @@
+/* Tailwind base, components, and utilities */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional: global styles for body and default fonts */
+body {
+  @apply bg-gray-100 text-black font-sans;
+  margin: 0;
+  padding: 0;
+}
+
+/* Optional: make textarea and inputs inherit font */
+input, textarea, select, button {
+  @apply font-sans;
+}
+
+/* Scrollbar styling (nice for received kudos list) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-200;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-600;
+}
+
+/* Make links default black and no underline */
+a {
+  @apply text-black no-underline;
+}
