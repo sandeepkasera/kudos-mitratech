@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -31,6 +31,7 @@ export default function Settings({ currentUser, onSaved }) {
         onSaved && onSaved(data);
       }
     } catch (err) {
+      console.debug('settings save failed', err);
       setError('Server error');
     } finally {
       setSaving(false);

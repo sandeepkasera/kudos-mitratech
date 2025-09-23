@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -14,6 +14,7 @@ export default function Profile({ currentUser }) {
         const data = await res.json();
         setGiven(data);
       } catch (err) {
+        console.debug('fetch given kudos failed', err);
         setGiven([]);
       } finally {
         setLoading(false);

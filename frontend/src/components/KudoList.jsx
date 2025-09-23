@@ -1,10 +1,8 @@
-import React from "react";
-
 function formatDate(iso) {
   try {
     const d = new Date(iso);
     return d.toLocaleString();
-  } catch (e) {
+  } catch {
     return iso;
   }
 }

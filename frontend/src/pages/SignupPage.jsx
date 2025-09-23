@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { User, Mail, Lock } from "lucide-react";
 
 export default function SignupForm({ onSubmit }) {
