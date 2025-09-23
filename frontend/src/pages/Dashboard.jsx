@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "../components/Navbar.jsx";
 import KudoForm from "../components/KudoForm.jsx";
 import ReceivedKudos from "../components/KudoList.jsx";

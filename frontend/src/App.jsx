@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import LoginPage from "./pages/LoginPage.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
@@ -28,15 +28,14 @@ export default function App() {
         // also update stored user to include nested organization etc
         if (data) dispatch(setUser(data));
       } catch (err) {
-        // ignore
+        // Log at debug level; keep value reference to satisfy linter
+  console.debug('fetch /me failed', err);
       }
-      // navigate to dashboard after login
       navigate('/dashboard');
     })();
   };
 
   const handleLogout = () => {
-    // Clear any stored auth (if you store tokens later)
     dispatch(clearUser());
   };
 
@@ -76,7 +75,9 @@ export default function App() {
       const r2 = await fetch(`${API_BASE_URL}/me/?user_id=${currentUser.id}`);
       const d2 = await r2.json();
       if (d2.weekly_remaining !== undefined) dispatch(setWeeklyRemaining(d2.weekly_remaining));
-    } catch (err) {}
+    } catch (err) {
+      console.debug('refresh weekly remaining failed', err);
+    }
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -26,6 +26,7 @@ export default function LoginForm({ onLogin }) {
         onLogin(data);
       }
     } catch (err) {
+      console.debug('login failed', err);
       setError("Server error");
     }
   };

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from 'react-router-dom'
 
 export default function Navbar({ currentUser, onLogout, weeklyRemaining }) {
@@ -23,7 +23,7 @@ export default function Navbar({ currentUser, onLogout, weeklyRemaining }) {
 
       <div className="flex items-center space-x-4">
         <div className="hidden sm:block text-black text-sm sm:text-base">
-          {currentUser ? `Logged in as: ${currentUser.first_name} ${currentUser.last_name}` : "Not logged in"}
+          {currentUser ? `Hi ${currentUser.first_name} ${currentUser.last_name}` : "Not logged in"}
         </div>
         <div className="hidden sm:flex items-center text-sm text-gray-700">
           <span className="mr-2">Kudos left:</span>
