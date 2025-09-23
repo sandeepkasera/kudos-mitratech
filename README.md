@@ -1,6 +1,7 @@
 # Kudos - Simple Peer-to-Peer Recognition App
 
 This repository contains a small web application for sending and receiving "kudos" (peer recognition). It is split into two parts:
+**Note: I used macOS to build this app. If you're using Windows, use the equivalent Windows commands for the same actions.**
 
 - `backend/` — Django + Django REST Framework API
 - `frontend/` — React + Vite single-page application
