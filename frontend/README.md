@@ -77,11 +77,4 @@ If ESLint / Prettier are configured, run them via the scripts in `package.json` 
 - The frontend uses environment variables prefixed with `VITE_` which are replaced at build time by Vite.
 - If you change `VITE_API_BASE_URL`, restart the dev server (`npm run dev`) to pick up new values.
 
----
-
-If you want, I can:
-- Add a `frontend/.env.example` file and add `.env` to `.gitignore`.
-- Add a short `README` section documenting the main API endpoints used by the frontend.
-
-Last updated: 2025-09-23
 

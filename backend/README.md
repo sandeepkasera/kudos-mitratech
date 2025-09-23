@@ -1,4 +1,3 @@
-(The file `/Users/sandeepkumar/Developer/Kudos-mitratech/backend/README.md` exists, but is empty)
 # Kudos Backend
 
 This is the Django backend for the Kudos application. It serves a small REST API used by the frontend.
