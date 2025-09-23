@@ -1,6 +1,7 @@
 # Kudos - Simple Peer-to-Peer Recognition App
 
 This repository contains a small web application for sending and receiving "kudos" (peer recognition). It is split into two parts:
+Note: I used macOS to build this app. If you're using Windows, use the equivalent Windows commands for the same actions.
 
 - `backend/` — Django + Django REST Framework API
 - `frontend/` — React + Vite single-page application
@@ -19,14 +20,22 @@ Get started (quick)
 ```bash
 cd backend
 # create and activate virtualenv
-python -m venv .venv
+python3 -m venv .venv
+or
+py -m venv .venv #windows
+
+# On MacOS (PowerShell):
 source .venv/bin/activate
+# On Windows (PowerShell):
+.\.venv\Scripts\Activate.ps1
+# On Windows (CMD):
+.\.venv\Scripts\activate.bat
 # install deps
 pip install -r requirements.txt
 # apply migrations
-python manage.py migrate
+python3 manage.py migrate
 # run dev server (reads PORT from backend/.env)
-python manage.py runserver
+python3 manage.py runserver
 ```
 
 For full backend details see `backend/README.md`.
