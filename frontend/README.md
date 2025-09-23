@@ -1,12 +1,87 @@
-# React + Vite
+# Frontend (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository contains the frontend app built with React and Vite. It communicates with the Django backend via a small REST API.
 
-Currently, two official plugins are available:
+This README covers:
+- Local setup and installation
+- Environment variables (`VITE_API_BASE_URL`)
+- Common npm scripts (dev, build, preview)
+- How to run the frontend together with the backend
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Prerequisites
+- Node.js 18+ (or a compatible LTS version)
+- npm or yarn
 
-## Expanding the ESLint configuration
+## 1) Install dependencies
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+From the `frontend` directory:
+
+```bash
+# using npm
+npm install
+
+# or using yarn
+yarn install
+```
+
+## 2) Environment variables
+
+Create a `.env` file in the `frontend` folder (it's safe to commit environment values that are not secret; keep secrets out of the repo).
+
+Example `.env` (used by the app):
+
+```env
+# Base API URL for the backend (note: Vite exposes vars prefixed with VITE_)
+VITE_API_BASE_URL=http://localhost:8000/api/
+```
+
+The app reads `import.meta.env.VITE_API_BASE_URL` in the code to communicate with the backend.
+
+## 3) Start development server
+
+```bash
+# development with HMR
+npm run dev
+```
+
+The dev server is typically available at `http://localhost:5173`.
+
+## 4) Build for production
+
+```bash
+npm run build
+
+# preview the production build locally
+npm run preview
+```
+
+## 5) Running frontend + backend together (local dev)
+
+Start the frontend as described above (`npm run dev`). For backend setup and how to run the Django server, see the backend README at:
+
+```
+../backend/README.md
+```
+(It includes instructions for installing Python dependencies, applying migrations and starting the dev server.)
+
+## 6) Useful scripts
+- `npm run dev` — start Vite dev server
+- `npm run build` — build production assets
+- `npm run preview` — preview production build locally
+
+## 7) Linting / formatting
+
+If ESLint / Prettier are configured, run them via the scripts in `package.json` (if present), e.g. `npm run lint`.
+
+## 8) Notes
+- The frontend uses environment variables prefixed with `VITE_` which are replaced at build time by Vite.
+- If you change `VITE_API_BASE_URL`, restart the dev server (`npm run dev`) to pick up new values.
+
+---
+
+If you want, I can:
+- Add a `frontend/.env.example` file and add `.env` to `.gitignore`.
+- Add a short `README` section documenting the main API endpoints used by the frontend.
+
+Last updated: 2025-09-23
+
